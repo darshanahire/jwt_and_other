@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/login.css">
+</head>
+
+<body>
+    <div class="btn_div">
+        <a id="home" href="/">Home</a>
+        <a id="login_btn" href="login">Login</a>
+        <a id="signup_btn" href="">SignUp</a>
+        <a id="logout_btn" href="data">Data </a>
+        <a id="logout_btn" href="#">LogOut</a>
+    </div>
+    <form action="" id="box">
+        <h1>Sign up</h1>
+        <input type="text" id="email" placeholder="Email" autocomplete="off" name="email">
+        <div class="emailError"></div>
+        <!-- <input type="text" id="username2" placeholder="Username"> -->
+        <input type="Password" id="password" placeholder="password" autocomplete="off" name="password">
+        <div class="passwordError"></div>
+        <input type="submit" id="login" value="Login">
+
+    </form>
+</body>
+<script src="js/index.js"></script>
+<script>
+    const form = document.querySelector('form');
+    const emailError = document.querySelector('.emailError');
+    const passwordError = document.querySelector('.passwordError');
+
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        emailError.textContent = '';
+    passwordError.textContent = '';
+
+        const email = form.email.value;
+        const password = form.password.value;
+
+        try {
+            const res = await fetch('/signup', {
+                method: 'POST',
+                body: JSON.stringify({ email, password }),
+                headers: { 'Content-Type': 'application/json' }
+            });
+            const data = await res.json();
+            console.log(data);
+            if(data.errors){
+                emailError.textContent = data.errors.email;
+                passwordError.textContent = data.errors.password;
+            }
+            if(data.user){
+                location.assign("/");
+            }
+        }
+        catch (err) {
+            console.log(err)
+
+        }
+
+
+
+    })
+</script>
+
+</html>
