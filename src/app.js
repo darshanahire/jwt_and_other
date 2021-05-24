@@ -5,8 +5,8 @@ const hbs= require("hbs");
 const app=express();
 const port=process.env.PORT || 3000;
 
-const authroutes=require('../routes/authroutes');
-const {requireauth}=require('../src/middleware/authmiddleware')
+const router=require('../routes/authorization');
+const {isTokenPresent}=require('./middleware/isTokenPresent')
 
 
 const staticPath=path.join(__dirname,"../public");
@@ -19,7 +19,7 @@ app.set("views",templete_Path)
 
 app.use(express.json())
 
-app.get("/",requireauth,(req,res)=>{
+app.get("/",isTokenPresent,(req,res)=>{
     res.render("home");
 })
 // app.get("/login",(req,res)=>{
@@ -28,10 +28,10 @@ app.get("/",requireauth,(req,res)=>{
 // app.get("/signup",(req,res)=>{
 //     res.render("signup");
 // })
-// app.get("/data",(req,res)=>{
-//     res.render("data");
-// })
-app.use(authroutes);
+app.get("/data",isTokenPresent,(req,res)=>{
+    res.render("data");
+})
+app.use(router);
 
 app.listen(port,(err)=>{
     console.log("listening...");

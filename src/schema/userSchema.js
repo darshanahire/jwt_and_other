@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const { isEmail } = require('validator');
 const bcrypt = require('bcrypt')
 
-
+// this is Schema of user 
 const userschema = new mongoose.Schema(
     {
         email: {
@@ -29,7 +29,7 @@ userschema.pre('save', async function (next) {
 })
 
 // static method for login user
-
+// this method checks that is the email and password enter in login page is same as store in database
 userschema.statics.login = async function (email, password) {
     const user = await this.findOne({ email });
     if (user) {

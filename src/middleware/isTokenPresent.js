@@ -1,6 +1,7 @@
+//this middleware checks whether the token is present in cookes if not then redirect to login
 const jwt = require("jsonwebtoken")
 
-const requireauth = (req, res, next) => {
+const isTokenPresent = (req, res, next) => {
     const token = req.cookies.jwt;
     if (token) {
         jwt.verify(token, 'thisisaloginandsignuppage', (err, decodedToken) => {
@@ -9,7 +10,8 @@ const requireauth = (req, res, next) => {
                 res.redirect('/login');
             }
             else {
-                console.log(decodedToken);
+                // console.log(decodedToken);
+                console.log("Token is Present");
                 next();
             }
         }
@@ -20,5 +22,5 @@ const requireauth = (req, res, next) => {
     }
 }
 module.exports = {
-    requireauth
+    isTokenPresent
 }
